@@ -9,7 +9,7 @@ use HTML::Selector::XPath qw/selector_to_xpath/;
 use HTML::TreeBuilder::XPath;
 use Net::Kotonoha::Koto;
 
-our $VERSION = '0.01';
+our $VERSION = '0.01a';
 
 sub new {
     my $class = shift;

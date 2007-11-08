@@ -1,4 +1,7 @@
 Revision history for Perl extension Net::Kotonoha
 
+0.01a Fri Nov  9 04:27:00 2007
+	- added use_test_base into Makefile.PL
+
 0.01  Wed Nov  7 11:34:06 2007
 	- original version

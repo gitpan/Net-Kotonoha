@@ -20,4 +20,4 @@ requires:
   WWW::Mechanize: 1.22
   perl: 5.8.1
   utf8: 1.04
-version: 0.01
+version: 0.01a
