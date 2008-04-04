@@ -1,5 +1,8 @@
 Revision history for Perl extension Net::Kotonoha
 
+0.06  Fri Apr 04 19:24:32 2008
+	- pass to pod-spell test
+
 0.05  Thu Nov 20 15:35:11 2007
 	- fixed bug. Koto::yesman or Koto::noman did not work.
 
