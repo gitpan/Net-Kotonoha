@@ -140,7 +140,7 @@ sub spiffy_filter {
              [${1}my \$self = shift;$2]gm;
             s[^(sub\s+\w+)\s*\(\s*\)(\s+\{.*\n)]
              [${1}${2}]gm;
-            s[^my\s+sub\s+(\w+)(\s+\{)(.*)((?s:.*?\r?\n))\}\r?\n]
+            s[^my\s+sub\s+(\w+)(\s+\{)(.*)((?s:.*?\n))\}\n]
              [push @my_subs, $1; "\$$1 = sub$2my \$self = shift;$3$4\};\n"]gem;
             my $preclare = '';
             if (@my_subs) {

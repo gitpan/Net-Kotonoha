@@ -2,7 +2,6 @@ package Net::Kotonoha;
 
 use strict;
 use warnings;
-use 5.8.1;
 use Carp;
 use WWW::Mechanize;
 use HTML::Selector::XPath qw/selector_to_xpath/;
@@ -10,7 +9,7 @@ use HTML::TreeBuilder::XPath;
 use HTML::Entities qw/decode_entities/;
 use Net::Kotonoha::Koto;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 sub new {
     my $class = shift;
@@ -45,7 +44,7 @@ sub login {
             password => $self->{password},
         }
     );
-    if ($res->is_success && $self->{mech}->uri =~ /\/home$/) {
+    if ($res->is_success && $self->{mech}->uri =~ /\/home$/) { # no critic
         my $tree = HTML::TreeBuilder::XPath->new;
         $tree->parse($res->content);
         $tree->eof;
@@ -110,11 +109,11 @@ sub _get_stream {
     $tree->eof;
     foreach my $line ($tree->findnodes(selector_to_xpath($xpath))) {
         my $html = decode_entities($line->as_HTML);
-        if ($html =~ /<a href="\/user\/(\w+)">([^<]+)<\/a>[^<]+<a href="\/no\/(\d+)">([^<]+)<\/a>([^ ]+)( [^ ]+ (.+))?$/) {
+        if ($html =~ /<a href="\/user\/(\w+)">([^<]+)<\/a>[^<]+<a href="\/no\/(\d+)">([^<]+)<\/a>([^ ]+)(?: [^ ]+ (.+))?$/) {
             push @list, {
                 user    => $1,
                 name    => $2,
-                comment => $7 || '',
+                comment => $6 || '',
                 answer  => $5,
                 koto_no => $3,
                 title   => $4,

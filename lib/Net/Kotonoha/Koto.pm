@@ -2,7 +2,7 @@ package Net::Kotonoha::Koto;
 
 use strict;
 use warnings;
-use utf8;
+use Encode;
 use Carp;
 use URI;
 use HTML::Selector::XPath qw/selector_to_xpath/;
@@ -24,7 +24,7 @@ sub _get_content {
         my $res = $self->{kotonoha}->{mech}->get("http://kotonoha.cc/no/$koto_no?limit=$limit");
         $self->{content} = $res->content if $res->is_success;
     }
-    return $self->{content};
+    return Encode::decode("utf-8", $self->{content});
 }
 
 sub _get_list {
@@ -58,7 +58,7 @@ sub _get_list {
             my $link = $user->attr('href');
             if ($link =~ /^\/user\/(\w+)/) {
                 my $userid = $1;
-                if (!grep($_->{user} eq $userid, @list)) {
+                if (!grep($_->{user} eq $userid, @list)) { # no critic
                     push @list, {
                         user => $userid,
                         name => $user->attr('title'), 
@@ -89,7 +89,7 @@ sub title {
     my $t = $tree->findnodes('//title');
     $t = $t ? $t->shift->as_text : undef;
     $tree->delete;
-    $t;
+    Encode::encode_utf8($t);
 }
 
 sub answer {
@@ -110,7 +110,7 @@ sub answer {
             $self->{content} = '';
 
             if ($my_comment) {
-				utf8::encode($my_comment) if utf8::is_utf8($my_comment);
+                $my_comment = decode_utf8($my_comment);
                 $uri = URI->new('http://kotonoha.cc/');
                 $uri->query_form(
                     mode    => 'ajax',
@@ -127,8 +127,8 @@ sub answer {
     } else {
         my @found;
         my $myself = $self->{kotonoha}->{user};
-        @found = grep $_->{user} eq $myself, @{$self->yesman};
-        @found = grep $_->{user} eq $myself, @{@$self->noman} unless @found;
+        @found = grep $_->{user} eq $myself, @{$self->yesman};               # no critic
+        @found = grep $_->{user} eq $myself, @{@$self->noman} unless @found; # no critic
         @found ? return shift @found : croak "couldn't post answer";
     }
 }
